@@ -21,3 +21,8 @@ body {
     flex: 1;
     min-width: 0;
 }
+
+.mainContent {
+    flex: 1;
+    width: 100%;
+}

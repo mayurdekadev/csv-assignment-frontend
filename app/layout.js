@@ -17,7 +17,9 @@ export default function RootLayout({ children }) {
         <AntdRegistry>
           <div className="mainContainer">
             <Sidebar />
-            {children}
+            <main className="mainContent">
+              {children}
+            </main>
           </div>
         </AntdRegistry>
       </body>

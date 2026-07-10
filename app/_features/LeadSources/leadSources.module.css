@@ -1,0 +1,84 @@
+.sectionContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+}
+
+.sectionHeader {
+    padding: 20px;
+    padding-left: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.header {
+    padding: 2px;
+    font-size: 19px;
+    font-weight: 600;
+    color: black;
+}
+
+.desc {
+    padding: 2px;
+    font-size: 12px;
+    font-weight: 100;
+}
+
+.uploadContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.uploadCard {
+    all: unset;
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    gap: 25px;
+    width: 95%;
+    padding: 22px;
+    border: 2px dashed #d1d5db;
+    border-radius: 16px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+.uploadCard:hover {
+    border-color: #4d9486;
+    background: #fafafa;
+}
+
+.uploadCard:focus-visible {
+    outline: 2px solid #4d9486;
+    outline-offset: 2px;
+}
+
+.uploadIcon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 60%;
+    background: #edf7f5;
+}
+
+.uploadContent h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.uploadContent p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+}
