@@ -1,6 +1,5 @@
 "use client";
 
-import TableComponent from '../../_components/Table/table.component';
 import dataSource from './dataSource';
 import { Phone, Users, Target } from 'lucide-react';
 import Grid from '@mui/material/Grid';

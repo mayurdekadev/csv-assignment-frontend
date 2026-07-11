@@ -1,24 +1,81 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import Papa from "papaparse";
+import LeadSourcesTable from '@/_components/Table/LeadSourcesTable.component.jsx/leadSourcesTable.component';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Modal from '@mui/material/Modal';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { ArrowUpToLine, X } from 'lucide-react';
+import {
+    Box,
+    IconButton,
+    Typography,
+} from "@mui/material";
+import { ArrowUpToLine, X, CircleAlert, FileText } from 'lucide-react';
 import styles from "./leadSources.module.css";
 
 const LeadSources = () => {
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [csvRows, setCsvRows] = useState([]);
+    const inputRef = useRef(null);
 
     const handleClose = () => {
         setIsOpen(false);
     };
+
+    const handleCsvFile = (file) => {
+        if (!file) return;
+        if (!file.name.toLowerCase().endsWith(".csv")) {
+            alert("Please select a CSV file.");
+            return;
+        }
+
+        setSelectedFile(file);
+
+        Papa.parse(file, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+                setCsvRows(results.data);
+            },
+        });
+    };
+
+    const handleInputChange = (e) => {
+        handleCsvFile(e.target.files[0]);
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+        handleCsvFile(e.dataTransfer.files[0]);
+    };
+
+    const handleCancel = () => {
+        setSelectedFile(null);
+        setCsvRows([]);
+        setIsDragging(false);
+
+        if (inputRef.current) {
+            inputRef.current.value = "";
+        }
+    };
+
+    const handleUpload = () => {
+        console.log("Upload");
+    }
 
     return (
         <div className={styles.sectionContainer}>
@@ -47,18 +104,181 @@ const LeadSources = () => {
                 onClose={handleClose}
                 fullWidth
                 maxWidth="sm"
+                slotProps={{
+                    paper: {
+                        sx: {
+                            borderRadius: "15px",
+                        },
+                    },
+                }}
             >
-                <DialogTitle
+                <Box
                     sx={{
-                        fontSize: "15px",
-                        fontWeight: 600,
-                        pb: 0,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        px: 3,
+                        pt: 3,
+                        pb: 1,
                     }}
                 >
-                    Import Leads via CSV
-                </DialogTitle>
+                    <Box>
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                fontWeight: 800,
+                                fontSize: "19px",
+                            }}
+                        >
+                            Import Leads via CSV
+                        </Typography>
+                        <Typography
+                            variant="body2"
+                            sx={{
+                                color: "#929292",
+                                mt: 0.5,
+                                fontWeight: 600,
+                            }}
+                        >
+                            Upload a CSV file to bulk import leads into your system.
+                        </Typography>
+                    </Box>
+
+                    <IconButton
+                        onClick={handleClose}
+                        size="small"
+                    >
+                        <X />
+                    </IconButton>
+                </Box>
                 <DialogContent>
-                    <DialogContentText sx={{fontSize: "15px"}}>Upload a CSV file to bulk import leads into your system.</DialogContentText>
+                    <input
+                        ref={inputRef}
+                        id="csv-upload"
+                        type="file"
+                        accept=".csv"
+                        hidden
+                        onChange={handleInputChange}
+                    />
+                    {
+                        !selectedFile ? (
+                            <label htmlFor="csv-upload">
+                                <Box
+                                    onDragOver={handleDragOver}
+                                    onDragLeave={handleDragLeave}
+                                    onDrop={handleDrop}
+                                    sx={{
+                                        border: "2px dashed #D7D7D7",
+                                        borderRadius: "14px",
+                                        height: 400,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        cursor: "pointer",
+                                        bgcolor: isDragging ? "#f3fbfa" : "#fff",
+                                        transition: ".2s",
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            border: "2px solid #D7D7D7",
+                                            borderRadius: "14px",
+                                            height: 50,
+                                            width: 50,
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            bgcolor: "#fff",
+                                        }}
+                                    >
+                                        <ArrowUpToLine size={30} color='#235f58' />
+                                    </Box>
+                                    <Typography
+                                        sx={{
+                                            mt: 3,
+                                            fontWeight: 800,
+                                            fontSize: 19,
+                                        }}
+                                    >
+                                        Drop your CSV file here
+                                    </Typography>
+                                    <Typography sx={{ fontSize: 15, fontWeight: 600, color: "#929292" }}>
+                                        or click to browse files
+                                    </Typography>
+                                    <Box
+                                        sx={{
+                                            border: "1px solid #D7D7D7",
+                                            borderRadius: "14px",
+                                            height: "auto",
+                                            width: 260,
+                                            p: 0.8,
+                                            mt: 3,
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            gap: 1,
+                                            bgcolor: "#f8f8f8",
+                                        }}
+                                    >
+                                        <CircleAlert size={17} color='#929292' />
+                                        <Typography sx={{ fontSize: 14, fontWeight: 600, color: "#929292" }}>
+                                            Supported file: .csv (max 5MB)
+                                        </Typography>
+                                    </Box>
+                                    <Typography sx={{ fontSize: 12, fontWeight: 600, color: "#929292", textAlign: 'center', width: "80%", mt: 2 }}>
+                                        Required headers: created_at, name, email, country_code, mobile_without_country_code, company, city, state, country, lead_owner, crm_status, crm_note. Template includes default + custom CRM fields to reduce upload errors.
+                                    </Typography>
+                                    <Box
+                                        sx={{
+                                            border: "1px solid #2b655f",
+                                            borderRadius: "14px",
+                                            height: "auto",
+                                            width: 280,
+                                            p: 0.8,
+                                            mt: 2,
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            bgcolor: "#e2f1f1",
+                                        }}
+                                    >
+                                        <FileText size={17} color='#2b655f' />
+                                        <Typography sx={{ fontSize: 14, fontWeight: 600, color: "#2b655f", width: "90%", textAlign: "center" }}>
+                                            Download Sample CSV Template
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            </label>
+                        ) : (
+                            <LeadSourcesTable file={selectedFile} rows={csvRows} />
+                        )
+                    }
+                    <Grid
+                        container
+                        spacing={2}
+                        sx={{ mt: 2 }}
+                    >
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                            <button
+                                className={styles.cancelButton}
+                                onClick={handleCancel}
+                            >
+                                Cancel
+                            </button>
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                            <button
+                                className={styles.uploadButton}
+                                disabled={!selectedFile}
+                                onClick={handleUpload}
+                            >Upload File
+                            </button>
+                        </Grid>
+                    </Grid>
                 </DialogContent>
             </Dialog>
         </div>

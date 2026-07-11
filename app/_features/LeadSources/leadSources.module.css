@@ -82,3 +82,66 @@
     font-weight: 600;
     color: #6b7280;
 }
+
+.cancelButton {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    background: #FFFFFF;
+    color: #111827;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancelButton:hover {
+    background: #F9FAFB;
+    border-color: #D1D5DB;
+}
+
+.cancelButton:active {
+    background: #F3F4F6;
+}
+
+.cancelButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.uploadButton {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    border: none;
+    background: #FF6B35;
+    color: white;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.uploadButton:hover {
+    background: #F85D24;
+}
+
+.uploadButton:active {
+    background: #E9551E;
+}
+
+.uploadButton:disabled {
+    background: #FDB79D;
+    cursor: not-allowed;
+}
