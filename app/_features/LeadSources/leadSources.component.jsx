@@ -3,6 +3,8 @@
 import { useState, useRef } from 'react';
 import Papa from "papaparse";
 import LeadSourcesTable from '@/_components/Table/LeadSourcesTable.component.jsx/leadSourcesTable.component';
+import { BASE_API_URL } from "../../../data";
+import { useRouter } from "next/navigation";
 import Grid from '@mui/material/Grid';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -15,12 +17,13 @@ import { ArrowUpToLine, X, CircleAlert, FileText } from 'lucide-react';
 import styles from "./leadSources.module.css";
 
 const LeadSources = () => {
-
     const [isOpen, setIsOpen] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [csvRows, setCsvRows] = useState([]);
+    const [isUploading, setIsUploading] = useState(false);
     const inputRef = useRef(null);
+    const router = useRouter();
 
     const handleClose = () => {
         setIsOpen(false);
@@ -73,9 +76,48 @@ const LeadSources = () => {
         }
     };
 
-    const handleUpload = () => {
-        console.log("Upload");
-    }
+    const handleUpload = async () => {
+        if (!selectedFile) return;
+        try {
+            setIsUploading(true);
+            const formData = new FormData();
+
+            formData.append("file", selectedFile);
+            const response = await fetch(BASE_API_URL, {
+                method: "POST",
+                body: formData,
+            });
+
+            const result = await response.json();
+            if (!response.ok) {
+                throw new Error(result.message || "Upload failed");
+            }
+
+            sessionStorage.setItem(
+                "importedLeads",
+                JSON.stringify(result.records)
+            );
+            sessionStorage.setItem(
+                "uploadSummary",
+                JSON.stringify({
+                    imported: result.imported,
+                    total: result.totalRecords,
+                    skipped: result.skipped,
+                })
+            );
+
+            handleCancel();
+            setIsOpen(false);
+
+            router.push("/manage-leads");
+
+        } catch (error) {
+            console.error(error);
+            alert(error.message);
+        } finally {
+            setIsUploading(false);
+        }
+    };
 
     return (
         <div className={styles.sectionContainer}>
@@ -101,7 +143,7 @@ const LeadSources = () => {
             </div>
             <Dialog
                 open={isOpen}
-                onClose={handleClose}
+                onClose={isUploading ? undefined : handleClose}
                 fullWidth
                 maxWidth="sm"
                 slotProps={{
@@ -266,6 +308,7 @@ const LeadSources = () => {
                             <button
                                 className={styles.cancelButton}
                                 onClick={handleCancel}
+                                disabled={isUploading}
                             >
                                 Cancel
                             </button>
@@ -273,9 +316,10 @@ const LeadSources = () => {
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <button
                                 className={styles.uploadButton}
-                                disabled={!selectedFile}
+                                disabled={!selectedFile || isUploading}
                                 onClick={handleUpload}
-                            >Upload File
+                            >
+                                {isUploading ? "Uploading..." : "Upload File"}
                             </button>
                         </Grid>
                     </Grid>

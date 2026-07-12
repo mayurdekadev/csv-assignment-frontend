@@ -1,13 +1,21 @@
 "use client";
 
-import dataSource from './dataSource';
+import { useEffect, useState } from "react";
 import { Phone, Users, Target } from 'lucide-react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import styles from "./manageLeads.module.css";
 
 const ManageLeads = () => {
-    const data = dataSource?.data;
+    const [leads, setLeads] = useState([]);
+
+    useEffect(() => {
+        const data = sessionStorage.getItem("importedLeads");
+        if (data) {
+            setLeads(JSON.parse(data));
+        }
+        console.log(leads);
+    }, []);
 
     return (
         <div className={styles.sectionContainer}>
