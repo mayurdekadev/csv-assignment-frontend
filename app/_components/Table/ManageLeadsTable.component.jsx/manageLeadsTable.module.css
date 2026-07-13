@@ -1,0 +1,93 @@
+.tableContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.heading {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    text-align: left;
+    padding: 16px;
+    background: #fafafa;
+    font-size: 13px;
+    font-weight: 700;
+    border-bottom: 1px solid #ececec;
+}
+
+.table td {
+    padding: 16px;
+    border-bottom: 1px solid #ececec;
+    font-size: 14px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.good_lead_follow_up {
+    background: #dff8e6;
+    color: #17853d;
+}
+
+.sale_done {
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.bad_lead {
+    background: #fde8e8;
+    color: #dc2626;
+}
+
+.did_not_connect {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.good {
+    background: #dff8e6;
+    color: #17853d;
+}
+
+.normal {
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.empty {
+    text-align: center;
+    padding: 50px;
+}
+
+.tableScroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: auto;
+}

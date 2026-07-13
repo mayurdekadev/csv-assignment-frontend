@@ -79,10 +79,6 @@
   flex: 1;
 }
 
-.section {
-  /* margin-bottom: 32px; */
-}
-
 .sectionTitle {
   font-size: 10px;
   font-weight: 500;
@@ -95,20 +91,14 @@
   display: flex;
   align-items: center;
   gap: 10px;
-
   width: 90%;
   padding: 8px 10px;
   margin-bottom: 6px;
-
   border-radius: 16px;
-
   color: #333;
   text-decoration: none;
-  /* removes underline */
-
   cursor: pointer;
   transition: all 0.2s ease;
-
   box-sizing: border-box;
 }
 

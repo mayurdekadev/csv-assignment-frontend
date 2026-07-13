@@ -3,6 +3,7 @@
     flex-direction: column;
     gap: 30px;
     width: 100%;
+    height: calc(100vh - 10px);
 }
 
 .sectionHeader {
@@ -33,7 +34,7 @@
     font-weight: 600;
 }
 
-.paperContent{
+.paperContent {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -59,3 +60,9 @@
     font-weight: 700;
     color: black;
 }
+
+.tableWrapper {
+    flex: 1;
+    min-height: 0;
+    padding: 24px;
+}   

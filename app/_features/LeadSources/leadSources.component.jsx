@@ -13,6 +13,7 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import { ArrowUpToLine, X, CircleAlert, FileText } from 'lucide-react';
 import styles from "./leadSources.module.css";
 
@@ -22,6 +23,7 @@ const LeadSources = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [csvRows, setCsvRows] = useState([]);
     const [isUploading, setIsUploading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const inputRef = useRef(null);
     const router = useRouter();
 
@@ -35,7 +37,6 @@ const LeadSources = () => {
             alert("Please select a CSV file.");
             return;
         }
-
         setSelectedFile(file);
 
         Papa.parse(file, {
@@ -79,6 +80,7 @@ const LeadSources = () => {
     const handleUpload = async () => {
         if (!selectedFile) return;
         try {
+            setLoading(true);
             setIsUploading(true);
             const formData = new FormData();
 
@@ -105,7 +107,6 @@ const LeadSources = () => {
                     skipped: result.skipped,
                 })
             );
-
             handleCancel();
             setIsOpen(false);
 
@@ -116,6 +117,7 @@ const LeadSources = () => {
             alert(error.message);
         } finally {
             setIsUploading(false);
+            setLoading(false);
         }
     };
 
@@ -325,6 +327,21 @@ const LeadSources = () => {
                     </Grid>
                 </DialogContent>
             </Dialog>
+            {loading && (
+                <div className={styles.loaderOverlay}>
+                    <div className={styles.loaderContent}>
+                        <CircularProgress
+                            size={55}
+                            thickness={4}
+                            sx={{ color: "#4d9486" }}
+                        />
+                        <h3>Processing your CSV...</h3>
+                        <p>
+                            Processing your file. This might take a few minutes
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

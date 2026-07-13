@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ManageLeadsTable from "@/_components/Table/ManageLeadsTable.component.jsx/manageLeadsTable.component";
 import { Phone, Users, Target } from 'lucide-react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -14,7 +15,6 @@ const ManageLeads = () => {
         if (data) {
             setLeads(JSON.parse(data));
         }
-        console.log(leads);
     }, []);
 
     return (
@@ -88,8 +88,8 @@ const ManageLeads = () => {
                     </Grid>
                 </Grid>
             </div>
-            <div>
-                {/* <TableComponent tableData={data} /> */}
+            <div className={styles.tableWrapper}>
+                <ManageLeadsTable rows={leads} />
             </div>
         </div>
     );
