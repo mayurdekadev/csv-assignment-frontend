@@ -85,7 +85,7 @@ const LeadSources = () => {
             const formData = new FormData();
 
             formData.append("file", selectedFile);
-            const response = await fetch(BASE_API_URL, {
+            const response = await fetch(`${BASE_API_URL}/api/upload`, {
                 method: "POST",
                 body: formData,
             });
@@ -335,9 +335,9 @@ const LeadSources = () => {
                             thickness={4}
                             sx={{ color: "#4d9486" }}
                         />
-                        <h3>Processing your CSV...</h3>
+                        <h3>Processing your CSV</h3>
                         <p>
-                            Processing your file. This might take a few minutes
+                            Processing your file with Gemini. This might take a few minutes.
                         </p>
                     </div>
                 </div>
